@@ -9,8 +9,12 @@ const userSchema = mongoose.Schema({
     },
     emailId: {
         type: String,
+        unique:false,
     },
     password: {
+        type: String,
+    },
+    gender: {
         type: String,
     },
     age: {
