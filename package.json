@@ -3,6 +3,7 @@
     "start": "nodemon ./src/app.js"
   },
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "express": "^5.1.0",
     "module": "^1.2.5",
     "mongoose": "^8.13.2",
