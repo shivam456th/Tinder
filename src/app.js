@@ -2,8 +2,11 @@ const express = require("express");
 const connectDB = require("./config/database.js");
 const User = require("./models/user.js");
 const bcrypt = require ("bcrypt")
+const { validationSignUpData } = require('./utils/validation.js'); // ✅ example path
+
 const app = express();
 app.use(express.json());
+
 
 // app.post("/signup", async (req, res) => {
 //   const userObje = new User(req.body);
@@ -17,25 +20,63 @@ app.use(express.json());
 //   }
 // });
 
+// app.post("/signup", async (req, res) => {
+//   try {
+//     //! Validation of Data
+//     validationSingUpData(req);
+//     const {password} = req.body;
+//     //! Encrypt the password
+//     const passwordHash = await bcrypt.hash(password, 10);
+//     console.log(passwordHash);
+
+//     //! Creating a new instance of the User 
+
+//     const user = newUser({
+//       firstName,
+//       lastName,
+//       emailId,
+//       password: passwordHash,
+//     })
+//   } catch (error) {
+//     res.status(404).send("Error saving the user:" + error.message);
+//   }
+// })
+
 app.post("/signup", async (req, res) => {
   try {
-    //! Validation of Data
-    validationSingUpData(req);
-    const {password} = req.body;
-    // Encrypt the password
+    // Validation of data
+    validationSignUpData(req); // ✅ Corrected
+
+    // Destructure values from body
+    const { firstName, lastName, emailId, password } = req.body;
+
+    const existingUser = await User.findOne({emailId});
+    
+    if (existingUser) {
+      return res.status(409).send("User with this email already exists")
+    }
+    
+    // Encrypt password
     const passwordHash = await bcrypt.hash(password, 10);
     console.log(passwordHash);
-    //! Creating a new instance of the User 
-    const user = newUser({
+
+    // Create new user
+    const user = new User({
       firstName,
       lastName,
       emailId,
       password: passwordHash,
-    })
+    });
+
+    // Save user to DB
+    await user.save();
+
+    res.status(201).send("User created successfully");
   } catch (error) {
-    res.status(404).send("Error saving the user:" + error.message);
+    res.status(404).send("Error saving the user: " + error.message);
   }
-})
+});
+
 
 // Get user by email
 app.get("/user", async (req, res) => {
@@ -117,7 +158,7 @@ app.get("/feed", async (req, res) => {
     const users = await User.find({});
     res.send(users);
   } catch (error) {
-    res.status(400).send("Something went wrong-");
+    res.status(400).send("Something went wrong");
   }
 });
 
