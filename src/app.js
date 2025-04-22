@@ -57,15 +57,16 @@ app.post("/signup", async (req, res) => {
     }
     
     // Encrypt password
-    const passwordHash = await bcrypt.hash(password, 10);
+    const passwordHash  = await bcrypt.hash(password, 10);
     console.log(passwordHash);
+    
 
     // Create new user
     const user = new User({
       firstName,
       lastName,
       emailId,
-      password: passwordHash,
+      password:passwordHash,
     });
 
     // Save user to DB
@@ -76,6 +77,41 @@ app.post("/signup", async (req, res) => {
     res.status(404).send("Error saving the user: " + error.message);
   }
 });
+
+app.post("/login", async (req, res) => {
+  try {
+    const { emailId, password } = req.body;
+
+    const user = await User.findOne({ emailId: emailId });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: "Incorrect password" });
+    }
+
+    // Login successful — You can send user data or token here
+    res.status(200).json({
+      message: "Login successful",
+      user: {
+        _id: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        emailId: user.emailId,
+        photoUrl: user.photoUrl,
+        about: user.about,
+        skills: user.skills,
+      },
+    });
+
+  } catch (error) {
+    console.error("Login error:", error.message);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 
 
 // Get user by email
