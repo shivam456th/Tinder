@@ -155,18 +155,6 @@ app.patch("/user/:userId", async (req, res) => {
   }
 });
 
-//Update data of the user
-// app.patch('/user', async (req, res) => {
-//   const userId = req.body.userId;
-//   const data = req.body;
-//   try {
-//     await User.findByIdAndUpdate({_id: userId},data);
-//     res.send("User Updated Successfully");
-//   } catch (error) {
-//     res.status(400).send("Something went wrong");
-//   }
-// })
-
 // Feed API - GET /feed - get all the users from the database
 app.get("/feed", async (req, res) => {
   try {
