@@ -1,97 +1,20 @@
 const express = require("express");
 const connectDB = require("./config/database.js");
 const User = require("./models/user.js");
-const bcrypt = require ("bcrypt")
-const { validationSignUpData } = require('./utils/validation.js'); // ✅ example path
-const cookieParser = require ('cookie-parser')
-const {userAuth} = require ('./middlewares/auth.js')
-const jwt = require("jsonwebtoken");
+const cookieParser = require("cookie-parser");
 
 const app = express();
 app.use(express.json());
-app.use(cookieParser())
+app.use(cookieParser());
 
+const authRouter = require('./routes/auth.js');
+const profileRouter = require('./routes/profile.js');
+const requestRouter = require('./routes/request.js')
 
-app.post("/signup", async (req, res) => {
-  try {
-    // Validation of data
-    validationSignUpData(req); // ✅ Corrected
+app.use("/", authRouter)
+app.use("/", profileRouter)
+app.use("/", requestRouter)
 
-    // Destructure values from body
-    const { firstName, lastName, emailId, password } = req.body;
-
-    const existingUser = await User.findOne({emailId});
-    
-    if (existingUser) {
-      return res.status(409).send("User with this email already exists")
-    }
-    
-    // Encrypt password
-    const passwordHash  = await bcrypt.hash(password, 10);
-    console.log(passwordHash);
-    
-
-    // Create new user
-    const user = new User({
-      firstName,
-      lastName,
-      emailId,
-      password:passwordHash,
-    });
-
-    // Save user to DB
-    await user.save();
-
-    res.status(201).send("User created successfully");
-  } catch (error) {
-    res.status(404).send("Error saving the user: " + error.message);
-  }
-});
-
-app.post("/login", async (req, res) => {
-  try {
-    const { emailId, password } = req.body;
-
-    const user = await User.findOne({ emailId });
-    if (!user) {
-      return res.status(404).send("Invalid credentials");
-    }
-
-    const isPasswordValid = await user.validatePassword(password)
-    if (isPasswordValid) {
-
-      //Create a JWT Token
-      const token = await user.getJWT();
-      
-      // Add the token cookie and send the response back to the user
-
-      res.cookie("token", token, {
-        expires: new Date(Date.now() + 8 * 3600000)
-      } );
-      res.send("Login Successful!")
-    } else {
-      throw new Error("Invalid credentials")
-    }
-  } catch (error) {
-    res.status(500).send("ERROR:" + error.message);
-  }
-});
-
-app.get("/profile", userAuth, async (req, res) => {
-  try {
-      const user = req.user; // Middleware ne yeh set kiya hai
-      res.send(user); // ✅ Send once, no res.send after this
-  } catch (error) {
-      return res.status(500).send("ERROR : " + error.message); // ✅ return here too
-  }
-});
-
-app.post("/sendConnectionRequest", userAuth, async (req, res) => {
-  //Sending a connection request
-  const user = req.user;
-  console.log("Sending a connection request");
-  res.send(user.firstName + " Sent the connect request!")
-})
 
 // Get user by email
 app.get("/user", async (req, res) => {
@@ -127,25 +50,26 @@ app.patch("/user/:userId", async (req, res) => {
   const userId = req.params?.userId;
   const data = req.body;
   console.log(data);
-  
+
   try {
-    
     const ALLOWED_UPDATES = [
       "userId",
       "about",
       "gender",
       "age",
       "firstName",
-      "skills"
-    ]
+      "skills",
+    ];
 
-    const isUpdateAllowed = Object.keys(data).every((key)=>ALLOWED_UPDATES.includes(key))
+    const isUpdateAllowed = Object.keys(data).every((key) =>
+      ALLOWED_UPDATES.includes(key)
+    );
 
     if (!isUpdateAllowed) {
       throw new Error("Update not allowed");
     }
     if (data?.skills.length > 10) {
-      throw new Error("Skills cannot be more then 10")
+      throw new Error("Skills cannot be more then 10");
     }
 
     await User.findByIdAndUpdate({ _id: userId }, data);
