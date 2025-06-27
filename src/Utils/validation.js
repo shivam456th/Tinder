@@ -28,10 +28,7 @@ const validateEditProfileData = (req) => {
   const isEditAllowed = Object.keys(req.body).every((field) =>
     allowedEditFields.includes(field)
   );
-
-  if (!isEditAllowed) {
-    throw new Error("Invalid edit request: Field not allowed for edit.");
-  }
+  return isEditAllowed
 };
 
 module.exports = {
