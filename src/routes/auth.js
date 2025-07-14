@@ -56,7 +56,7 @@ authRouter.post("/login", async (req, res) => {
     const isPasswordValid = await user.validatePassword(password);
     if (isPasswordValid) {
       //Create a JWT Token
-      const token = await jwt.sign({id:user._id}, "shivam123!@#", {expiresIn: "1hr"})
+      const token = await user.getJWT()
 
     // Add the token cookie and send the response back to the user
 
