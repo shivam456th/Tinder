@@ -34,8 +34,9 @@ const userSchema = mongoose.Schema({
   photoUrl: {
     type: String,
     default:
-      "https://www.shareicon.net/data/512x512/2017/06/21/887406_man_512x512.png",
+      "https://raw.githubusercontent.com/shivam456th/profile-images/main/IMG_9747.JPG",
   },
+  
   about: {
     type: String,
     default: "This is default of the user!",
