@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { BASE_URL } from '../src/redux/constants'
+import { BASE_URL } from '../redux/constants'
 import axios from 'axios' // Import axios for HTTP requests
 import {Link , useNavigate} from 'react-router-dom'
 
@@ -40,12 +40,11 @@ const Navbar = () => {
       <ul
         tabIndex={0}
         className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-        <li>
+        <Link to="/profile">
           <a className="justify-between">
             Profile
-            <span className="badge">New</span>
           </a>
-        </li>
+        </Link>
         <li><a>Settings</a></li>
         <li onClick={handleLogout}><a>Logout</a></li>
       </ul>

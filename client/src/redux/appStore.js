@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import userReducer from "./userSlice"; // check path
+import feedReducer from "./FeedSlice"
 
 const store = configureStore({
   reducer: {
-    user: userReducer, // key should be meaningful
+    user: userReducer,
+    feed: feedReducer
   },
 });
 

@@ -2,10 +2,11 @@ import Navbar from './Navbar'
 import { Outlet, useNavigate } from 'react-router-dom'
 import Footer from './Footer'
 import axios from 'axios'
-import { BASE_URL } from './redux/constants'
+import { BASE_URL } from '../redux/constants'
 import { useDispatch } from 'react-redux'
 import { useEffect } from 'react'
-import { addUser } from './redux/userSlice'
+import { addUser } from '../redux/userSlice'
+import Feed from './Feed'
 
 const Body = () => {
   const dispatch = useDispatch();
@@ -33,6 +34,7 @@ const Body = () => {
     <div>
         <Navbar/>
         <Outlet/>
+        <Feed/>
         <Footer/>
     </div>
   )
