@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import axios from 'axios';
+import axios from "axios";
 import { BASE_URL } from "./redux/constants";
-import toast from 'react-hot-toast';
+import toast from "react-hot-toast";
 import { addUser } from "./redux/userSlice";
 
 const Login = () => {
@@ -21,14 +21,14 @@ const Login = () => {
           password,
         },
         {
-          withCredentials: true
+          withCredentials: true,
         }
       );
       console.log(res);
       dispatch(addUser(res.data));
     } catch (error) {
       console.error(error.response.data);
-      toast.error('Invalid credentials');
+      toast.error("Invalid credentials");
     }
   };
 
