@@ -1,11 +1,13 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+// import UserCard from './UserCard'
 
 const Profile = () => {
   return (
     <>
-    
-    <div>Profile</div>
+    {/* <UserCard/> */}
+    <h1>
+    Profile
+    </h1>
     </>
   )
 }

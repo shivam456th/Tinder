@@ -34,7 +34,7 @@ const userSchema = mongoose.Schema({
   photoUrl: {
     type: String,
     default:
-      "https://raw.githubusercontent.com/shivam456th/profile-images/main/IMG_9747.JPG",
+    "https://geographyandyou.com/images/user-profile.png",
   },
   
   about: {
