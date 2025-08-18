@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 import { addUser } from "../redux/userSlice";
 
 const Login = () => {
-  const [emailId, setEmailId] = useState("shivamthapa792@gmail.com");
+  const [emailId, setEmailId] = useState("Shivam792@gmail.com");
   const [password, setPassword] = useState("shivams123@$%RR");
 
   const dispatch = useDispatch();

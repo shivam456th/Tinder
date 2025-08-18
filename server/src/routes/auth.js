@@ -11,7 +11,11 @@ authRouter.post("/signup", async (req, res) => {
     validationSignUpData(req); // ✅ Corrected
 
     // Destructure values from body
-    const { firstName, lastName, emailId, password } = req.body;
+    const { firstName, lastName, emailId, password, gender,
+      photoUrl,
+      about,
+      age,
+      skills} = req.body;
 
     const existingUser = await User.findOne({ emailId });
 
@@ -29,6 +33,11 @@ authRouter.post("/signup", async (req, res) => {
       lastName,
       emailId,
       password: passwordHash,
+      age,
+      gender,
+      photoUrl,
+      about,
+      skills
     });
 
     // Save user to DB

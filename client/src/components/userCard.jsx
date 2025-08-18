@@ -1,25 +1,24 @@
-import React from 'react'
-
 const UserCard = ({user}) => {
+  const { firstName, lastName, photoUrl, age, gender, about, skills } = user
 
-
-  
   return (
-    <div>
-        <div className="card bg-base-100 w-96 shadow-sm">
-  <figure>
-    <img
-      src={user?.photoUrl ||""}
-      alt="photo" />
-  </figure>
-  <div className="card-body">
-    <h2 className="card-title">{user.firstName + " " + user.lastName}</h2>
-    <p>A card component has a figure, a body part, and inside body there are title and actions parts</p>
-    <div className="card-actions justify-end">
-      <button className="btn btn-primary">Buy Now</button>
-    </div>
-  </div>
-</div>
+    <div className="card bg-base-100 w-96 shadow-sm">
+      <figure>
+        <img
+          className="w-24 h-24 object-cover rounded-full"
+          src={photoUrl || "https://via.placeholder.com/150"}
+          alt={`${firstName} ${lastName}`}
+        />
+      </figure>
+      <div className="card-body">
+        <h2 className="card-title">{firstName} {lastName}</h2>
+        <p>{about || "No bio available"}</p>
+        <div className="card-actions justify-end text-sm text-gray-600">
+          <p>{age ? `${age} years` : "Age N/A"}</p>
+          <p>{gender || "Not specified"}</p>
+          <p>{skills?.length > 0 ? skills.join(", ") : "No skills"}</p>
+        </div>
+      </div>
     </div>
   )
 }
