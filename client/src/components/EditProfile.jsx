@@ -1,113 +1,284 @@
-import React, { useState } from "react";
+  // import React, { useState } from "react";
+  // import UserCard from "./UserCard"
+  // import axios from "axios";
+  // import { useDispatch } from "react-redux";
+  // import { addUser } from "../redux/userSlice";
+  // import { BASE_URL } from "../redux/constants";
+
+  // const EditProfile = ({ user }) => {
+  //   const [firstName, setFirstName] = useState(user.firstName);
+  //   const [lastName, setLastName] = useState(user.lastName);
+  //   const [photoUrl, setPhotoUrl] = useState(user.photoUrl);
+  //   const [age, setAge] = useState(user.age);
+  //   const [gender, setGender] = useState(user.gender);
+  //   const [about, setAbout] = useState(user.about);
+  //   const [skills, setSkills] = useState(user.skills);
+  //   const [error, setError] = useState("");
+  //   const dispatch = useDispatch()
+
+  //   const saveProfile = async () => {
+  //     try {
+  //       const res = await axios.patch(BASE_URL + "/profile/edit", {firstName, lastName, photoUrl, age, gender, about},{
+  //         withCredentials: true
+  //       })
+  //       dispatch(addUser(res?.data?.data))
+  //     } catch (error) {
+  //       setError(error.message);
+  //       console.error("Profile update failed:", error.message);
+  //     }
+  //   }
+
+  //   const handleSubmit = (e) => {
+  //     e.preventDefault();
+  //     const updatedUser = { firstName, lastName, photoUrl, age, gender, about };
+  //     console.log("Updated User:", updatedUser);
+
+  //     // TODO: call API -> axios.put(BASE_URL + "/profile", updatedUser)
+      
+  //     // toast.success("Profile updated successfully!")
+  //   };
+
+  //   return (
+  //     <>
+  //     <div className="flex justify-center my-10">
+  //       <div className="card bg-base-100 w-96 shadow-sm flex justify-center mx-10">
+  //         <div className="card-body">
+  //           <h2 className="card-title">Edit Profile</h2>
+
+  //           <form onSubmit={handleSubmit}>
+  //             {/* First Name */}
+  //             <div className="form-control">
+  //               <label htmlFor="firstName" className="label">First Name</label>
+  //               <input
+  //                 type="text"
+  //                 id="firstName"
+  //                 value={firstName}
+  //                 onChange={(e) => setFirstName(e.target.value)}
+  //                 className="input input-bordered w-full max-w-xs"
+  //               />
+  //             </div>
+
+  //             {/* Last Name */}
+  //             <div className="form-control">
+  //               <label htmlFor="lastName" className="label">Last Name</label>
+  //               <input
+  //                 type="text"
+  //                 id="lastName"
+  //                 value={lastName}
+  //                 onChange={(e) => setLastName(e.target.value)}
+  //                 className="input input-bordered w-full max-w-xs"
+  //               />
+  //             </div>
+
+  //             {/* Photo URL */}
+  //             <div className="form-control">
+  //               <label htmlFor="photoUrl" className="label">Photo URL</label>
+  //               <input
+  //                 type="url"
+  //                 id="photoUrl"
+  //                 value={photoUrl}
+  //                 onChange={(e) => setPhotoUrl(e.target.value)}
+  //                 className="input input-bordered w-full max-w-xs"
+  //               />
+  //             </div>
+
+  //             {/* Age */}
+  //             <div className="form-control">
+  //               <label htmlFor="age" className="label"> Age </label>
+  //               <input
+  //                 type="number"
+  //                 id="age"
+  //                 value={age}
+  //                 onChange={(e) => setAge(e.target.value)}
+  //                 className="input input-bordered w-full max-w-xs"
+  //               />
+  //             </div>
+              
+
+  //             {/* Gender */}
+  //             <div className="form-control">
+  //               <label htmlFor="gender" className="label">Gender</label>
+  //               <select
+  //                 id="gender"
+  //                 value={gender}
+  //                 onChange={(e) => setGender(e.target.value)}
+  //                 className="select select-bordered w-full max-w-xs"
+  //               >
+  //                 <option value="">Select Gender</option>
+  //                 <option value="male">Male</option>
+  //                 <option value="female">Female</option>
+  //                 <option value="other">Other</option>
+  //               </select>
+  //             </div>
+
+  //             {/* About */}
+  //             <div className="form-control">
+  //               <label htmlFor="about" className="label">About</label>
+  //               <textarea
+  //                 id="about"
+  //                 value={about}
+  //                 onChange={(e) => setAbout(e.target.value)}
+  //                 className="textarea textarea-bordered w-full max-w-xs"
+  //               />
+  //             </div>
+
+  //             <div className="form-control mt-6">
+  //               <button type="submit" className="btn btn-primary" onClick={saveProfile}>
+  //                 Save Profile
+  //               </button>
+  //             </div>
+  //           </form>
+  //         </div>
+  //       </div>
+  //     <UserCard user={{firstName, lastName, photoUrl, age, gender, about, skills}}/>
+  //     </div>
+
+  //     </>
+  //   );
+  // };
+
+  // export default EditProfile;
+
+
+  import React, { useState } from "react";
+import UserCard from "./UserCard";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { addUser } from "../redux/userSlice";
+import { BASE_URL } from "../redux/constants";
+import { User, Image, Calendar, Info, Save, UserCheck } from "lucide-react";
 
 const EditProfile = ({ user }) => {
-  const [firstName, setFirstName] = useState(user.firstName || "");
-  const [lastName, setLastName] = useState(user.lastName || "");
-  const [photoUrl, setPhotoUrl] = useState(user.photoUrl || "");
-  const [age, setAge] = useState(user.age || "");
-  const [gender, setGender] = useState(user.gender || "");
-  const [about, setAbout] = useState(user.about || "");
+  const [firstName, setFirstName] = useState(user.firstName);
+  const [lastName, setLastName] = useState(user.lastName);
+  const [photoUrl, setPhotoUrl] = useState(user.photoUrl);
+  const [age, setAge] = useState(user.age);
+  const [gender, setGender] = useState(user.gender);
+  const [about, setAbout] = useState(user.about);
+  const [skills, setSkills] = useState(user.skills);
+  const [error, setError] = useState("");
+  const dispatch = useDispatch();
+
+  const saveProfile = async () => {
+    try {
+      const res = await axios.patch(
+        BASE_URL + "/profile/edit",
+        { firstName, lastName, photoUrl, age, gender, about },
+        { withCredentials: true }
+      );
+      dispatch(addUser(res?.data?.data));
+    } catch (error) {
+      setError(error.message);
+      console.error("Profile update failed:", error.message);
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const updatedUser = { firstName, lastName, photoUrl, age, gender, about };
     console.log("Updated User:", updatedUser);
-
-    // TODO: call API -> axios.put(BASE_URL + "/profile", updatedUser)
-    // toast.success("Profile updated successfully!")
   };
 
   return (
-    <div className="flex justify-center my-10">
-      <div className="card bg-base-100 w-96 shadow-sm">
-        <div className="card-body">
-          <h2 className="card-title">Edit Profile</h2>
+    <div className="flex justify-center items-center gap-10 px-5 my-10">
+      {/* Form Section */}
+      <div className="w-full lg:w-96 p-6 rounded-2xl bg-white/70 backdrop-blur-md shadow-xl border border-gray-200">
+        <h2 className="text-xl font-bold flex items-center gap-2 mb-6">
+          <UserCheck className="w-6 h-6 text-pink-600" /> Edit Profile
+        </h2>
 
-          <form onSubmit={handleSubmit}>
-            {/* First Name */}
-            <div className="form-control">
-              <label htmlFor="firstName" className="label">First Name</label>
+        <form onSubmit={handleSubmit} className="space-y-5">
+          {/* First + Last Name in one row */}
+          <div className="flex gap-3">
+            <div className="w-1/2 relative">
+              <User className="w-4 h-4 absolute top-3 left-3 text-gray-400" />
               <input
                 type="text"
-                id="firstName"
+                placeholder="First Name"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
-                className="input input-bordered w-full max-w-xs"
+                className="input input-bordered w-full rounded-xl pl-9"
               />
             </div>
-
-            {/* Last Name */}
-            <div className="form-control">
-              <label htmlFor="lastName" className="label">Last Name</label>
+            <div className="w-1/2 relative">
+              <User className="w-4 h-4 absolute top-3 left-3 text-gray-400" />
               <input
                 type="text"
-                id="lastName"
+                placeholder="Last Name"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
-                className="input input-bordered w-full max-w-xs"
+                className="input input-bordered w-full rounded-xl pl-9"
               />
             </div>
+          </div>
 
-            {/* Photo URL */}
-            <div className="form-control">
-              <label htmlFor="photoUrl" className="label">Photo URL</label>
-              <input
-                type="url"
-                id="photoUrl"
-                value={photoUrl}
-                onChange={(e) => setPhotoUrl(e.target.value)}
-                className="input input-bordered w-full max-w-xs"
-              />
-            </div>
+          {/* Photo URL */}
+          <div className="relative">
+            <Image className="w-4 h-4 absolute top-3 left-3 text-gray-400" />
+            <input
+              type="url"
+              placeholder="Photo URL"
+              value={photoUrl}
+              onChange={(e) => setPhotoUrl(e.target.value)}
+              className="input input-bordered w-full rounded-xl pl-9"
+            />
+          </div>
 
-            {/* Age */}
-            <div className="form-control">
-              <label htmlFor="age" className="label"> Age </label>
+          {/* Age + Gender */}
+          <div className="flex gap-3">
+            <div className="w-1/2 relative">
+              <Calendar className="w-4 h-4 absolute top-3 left-3 text-gray-400" />
               <input
-                type="url"
-                id="age"
+                type="number"
+                placeholder="Age"
                 value={age}
                 onChange={(e) => setAge(e.target.value)}
-                className="input input-bordered w-full max-w-xs"
+                className="input input-bordered w-full rounded-xl pl-9"
               />
             </div>
-            
-
-            {/* Gender */}
-            <div className="form-control">
-              <label htmlFor="gender" className="label">Gender</label>
+            <div className="w-1/2 relative">
               <select
-                id="gender"
                 value={gender}
                 onChange={(e) => setGender(e.target.value)}
-                className="select select-bordered w-full max-w-xs"
+                className="select select-bordered w-full rounded-xl"
               >
-                <option value="">Select Gender</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
+                <option value="">Gender</option>
+                <option value="male">♂ Male</option>
+                <option value="female">♀ Female</option>
+                <option value="other">⚧ Other</option>
               </select>
             </div>
+          </div>
 
-            {/* About */}
-            <div className="form-control">
-              <label htmlFor="about" className="label">About</label>
-              <textarea
-                id="about"
-                value={about}
-                onChange={(e) => setAbout(e.target.value)}
-                className="textarea textarea-bordered w-full max-w-xs"
-              />
-            </div>
+          {/* About */}
+          <div className="relative">
+            <Info className="w-4 h-4 absolute top-3 left-3 text-gray-400" />
+            <textarea
+              placeholder="Tell something about yourself..."
+              value={about}
+              onChange={(e) => setAbout(e.target.value)}
+              className="textarea textarea-bordered w-full rounded-xl pl-9"
+              rows="3"
+            />
+          </div>
 
-            <div className="form-control mt-6">
-              <button type="submit" className="btn btn-primary">
-                Save Profile
-              </button>
-            </div>
-          </form>
-        </div>
+          {/* Save Button */}
+          <button
+            type="submit"
+            onClick={saveProfile}
+            className="btn w-full bg-pink-600 hover:bg-pink-700 text-white rounded-xl flex items-center justify-center gap-2"
+          >
+            <Save className="w-5 h-5" /> Save Profile
+          </button>
+        </form>
+
+        {error && <p className="text-red-500 text-sm mt-4">{error}</p>}
       </div>
+
+      {/* Live Preview */}
+      <UserCard
+        user={{ firstName, lastName, photoUrl, age, gender, about, skills }}
+      />
     </div>
   );
 };
