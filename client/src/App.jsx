@@ -6,6 +6,9 @@ import { Provider } from "react-redux";
 import appStore from './redux/appStore';
 import Body from './components/Body';
 import { Toaster } from 'react-hot-toast';
+import Feed from './components/Feed';
+import Connections from './components/Connections';
+import Requests from './components/Requests';
 
 const App = () => {
   return (
@@ -16,6 +19,9 @@ const App = () => {
           <Route path='/' element={<Body/>}>
             <Route path='/login' element={<Login />} />
             <Route path='/profile' element={<Profile />} />
+            <Route path='/feed' element={<Feed />} />
+            <Route path='/connections' element={<Connections />} />
+            <Route path='/requests' element={<Requests />} />
           </Route>
         </Routes>
     </Provider>

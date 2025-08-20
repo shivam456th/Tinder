@@ -158,15 +158,20 @@ const EditProfile = ({ user }) => {
   const [skills, setSkills] = useState(user.skills);
   const [error, setError] = useState("");
   const dispatch = useDispatch();
+  const [showToast, setShowToast] = useState(false)
 
   const saveProfile = async () => {
     try {
       const res = await axios.patch(
         BASE_URL + "/profile/edit",
         { firstName, lastName, photoUrl, age, gender, about },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       dispatch(addUser(res?.data?.data));
+      setShowToast(true)
+      setTimeout(()=>{
+        setShowToast(false)
+      },3000);
     } catch (error) {
       setError(error.message);
       console.error("Profile update failed:", error.message);
@@ -180,6 +185,7 @@ const EditProfile = ({ user }) => {
   };
 
   return (
+    <>
     <div className="flex justify-center items-center gap-10 px-5 my-10">
       {/* Form Section */}
       <div className="w-full lg:w-96 p-6 rounded-2xl bg-white/70 backdrop-blur-md shadow-xl border border-gray-200">
@@ -280,6 +286,14 @@ const EditProfile = ({ user }) => {
         user={{ firstName, lastName, photoUrl, age, gender, about, skills }}
       />
     </div>
+    {showToast && (
+      <div className="toast toast-top toast-center">
+      <div className="alert alert-success bg-yellow-400 text-white">
+        <span>Profile Saved successfully.</span>
+      </div>
+    </div>
+    )}
+    </>
   );
 };
 

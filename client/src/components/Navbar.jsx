@@ -10,6 +10,10 @@ const Navbar = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
+  const goToHome = () => {
+    navigate("/feed");
+  };
+
   const handleLogout = async () => {
     try {
       await axios.post(BASE_URL + "/logout", {}, { withCredentials: true })
@@ -44,7 +48,7 @@ const Navbar = () => {
               <li>
                 <Link to="/profile" className="justify-between">Profile</Link>
               </li>
-              <li><a>Settings</a></li>
+              <li><div onClick={goToHome}>Feed</div></li>
               <li>
                 <button onClick={handleLogout}>Logout</button>
               </li>
