@@ -9,6 +9,26 @@ const USER_SAFE_DATA = "firstName  lastName emailId photoUrl _id";
 
 //Get all the pending connection request for the loggedIn user
 
+userRouter.get("/user/connections", userAuth, async (req, res) => {
+    console.log('hey')
+    try {
+        const loggerInUser = req.user;
+        const connectionRequest = await ConnectionRequest.find({
+            $or:[
+                {toUserId: loggerInUser._id, status:"accepted"},
+                {fromUserId: loggerInUser._id, status:"accepted"}
+            ]
+        }).populate("fromUserId", ["firstName", "lastName"])
+        console.log(connectionRequest)
+        const data = connectionRequest.map((row)=> row.fromUserId)
+        res.json({data})
+        console.log(data);
+        
+    } catch (error) {
+        res.status(400).send({message: error.message})
+    }
+})
+
 userRouter.get("/user/requests/received", userAuth, async (req, res) => {
     try {
         const loggedInUser = req.user;
@@ -29,23 +49,6 @@ userRouter.get("/user/requests/received", userAuth, async (req, res) => {
         return res.status(400).send("ERROR: " + error.message)
     }
 })
-
-userRouter.get("/user/connections", userAuth, async (req, res) => {
-    try {
-        const loggerInUser = req.user;
-        const connectionRequest = await ConnectionRequest.find({
-            $or:[
-                {toUserId: loggedInUser._id, status:"accepted"},
-                {fromUserId: loggerInUser._id, status:"accepted"}
-            ]
-        }).populate("fromUserId", ["firstName", "lastName"])
-        const data = ConnectionRequest.map((row)=> row.fromUserId)
-        res.json({data})
-    } catch (error) {
-        res.status(400).send({message: error.message})
-    }
-})
-
 
  
 userRouter.get("/feed", userAuth, async (req, res) => {

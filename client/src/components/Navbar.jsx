@@ -48,6 +48,9 @@ const Navbar = () => {
               <li>
                 <Link to="/profile" className="justify-between">Profile</Link>
               </li>
+              <li>
+                <Link to="/connections" className="justify-between">Connections</Link>
+              </li>
               <li><div onClick={goToHome}>Feed</div></li>
               <li>
                 <button onClick={handleLogout}>Logout</button>
