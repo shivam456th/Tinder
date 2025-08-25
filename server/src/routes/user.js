@@ -10,24 +10,32 @@ const USER_SAFE_DATA = "firstName  lastName emailId photoUrl _id";
 //Get all the pending connection request for the loggedIn user
 
 userRouter.get("/user/connections", userAuth, async (req, res) => {
-    console.log('hey')
     try {
-        const loggerInUser = req.user;
-        const connectionRequest = await ConnectionRequest.find({
-            $or:[
-                {toUserId: loggerInUser._id, status:"accepted"},
-                {fromUserId: loggerInUser._id, status:"accepted"}
-            ]
-        }).populate("fromUserId", ["firstName", "lastName"])
-        console.log(connectionRequest)
-        const data = connectionRequest.map((row)=> row.fromUserId)
-        res.json({data})
-        console.log(data);
-        
+      const loggedInUser = req.user;
+  
+      const connectionRequest = await ConnectionRequest.find({
+        $or: [
+          { toUserId: loggedInUser._id, status: "accepted" },
+          { fromUserId: loggedInUser._id, status: "accepted" }
+        ]
+      })
+        .populate("fromUserId", "firstName lastName photoUrl gender about")
+        .populate("toUserId", "firstName lastName photoUrl gender about");
+  
+      const data = connectionRequest.map((row) => {
+        if (row.fromUserId._id.toString() === loggedInUser._id.toString()) {
+          return row.toUserId;   // dusre user ka pura object return karo
+        } else {
+          return row.fromUserId;
+        }
+      });
+  
+      res.json({ data });
     } catch (error) {
-        res.status(400).send({message: error.message})
+      res.status(400).send({ message: error.message });
     }
-})
+  });
+  
 
 userRouter.get("/user/requests/received", userAuth, async (req, res) => {
     try {
