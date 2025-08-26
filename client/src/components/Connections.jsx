@@ -79,19 +79,61 @@ const Connections = () => {
   if (connections.length === 0) return <h1>No Connections Found</h1>
 
   return (
-    <div className='flex justify-center text-center my-10'>
-      <h1 className='text-bold text-xl'>Connections</h1>
-      {connections.map((connection) => {
-          const { firstName, lastName, photoUrl, gender, about } = connection;
+    <div className='flex flex-col items-center my-10 px-4'>
+  {/* Heading ko thoda aur prominent banaya hai */}
+  <h1 className='font-bold text-3xl md:text-4xl mb-8 text-gray-800'>Connections</h1>
+  
+  <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8'>
+    {connections.map((connection) => {
+      const { firstName, lastName, photoUrl, about, role, age, gender } = connection;
 
-          return (
-            <div key={firstName + lastName} className="p-2 shadow-md rounded-md mb-2">
-              <img src={photoUrl} alt={`${firstName} ${lastName}`} />
-              <div>{firstName} {lastName}</div>
+      return (
+        <div 
+          key={firstName + lastName} 
+          // Card design ko premium look diya gaya hai
+          className="bg-white p-6 shadow-xl rounded-2xl border border-gray-100 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl"
+        >
+          <div className="flex flex-col items-center">
+            
+            {/* Profile Picture ko highlight kiya hai */}
+            <img 
+              className='w-28 h-28 rounded-full ring-4 ring-indigo-200 object-cover' 
+              src={photoUrl} 
+              alt={`${firstName} ${lastName}`} 
+            />
+            
+            {/* Naam aur Role section */}
+            <div className='text-center mt-4'>
+              <h2 className='text-xl font-bold text-gray-900'>{firstName} {lastName}</h2>
+              <p className='text-sm font-semibold text-indigo-600 mt-1'>
+                {role || 'Software Developer'} {/* Default role agar data mein nahi hai */}
+              </p>
             </div>
-          );
-      })}
-    </div>
+            
+            {/* About Section (fixed height ke saath) */}
+            <p className='text-center text-gray-600 mt-4 text-sm leading-relaxed h-16 overflow-hidden'>
+              {about}
+            </p>
+            <p className='text-center text-gray-600 mt-4 text-sm leading-relaxed h-16 overflow-hidden'>
+              {age + "" +  gender}
+            </p>
+
+            {/* Action Buttons */}
+            <div className='flex gap-4 mt-6'>
+              <button className='px-5 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-full shadow-md hover:bg-indigo-700 transition-colors duration-300'>
+                Connect
+              </button>
+              <button className='px-5 py-2 text-sm font-semibold text-gray-700 bg-gray-200 rounded-full hover:bg-gray-300 transition-colors duration-300'>
+                View
+              </button>
+            </div>
+
+          </div>
+        </div>
+      );
+    })}
+  </div>
+</div>
   );
 }
 
