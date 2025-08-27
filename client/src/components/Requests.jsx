@@ -9,6 +9,25 @@ const Requests = () => {
   const requests = useSelector((store) => store.requests);
   const dispatch = useDispatch();
 
+ const reviewRequest = async (status, _id) => { // 1. Function ko 'async' banayein
+  console.log(status, _id); // Debugging ke liye
+  try {
+    // 2. 'await' use karke API response ka intezaar karein
+    const res = await axios.post(
+      `${BASE_URL}/request/review/${status}/${_id}`,
+      {},
+      { withCredentials: true }
+    ); 
+    
+    // Optional: Success message dikhayein ya state update karein
+    console.log("Request reviewed successfully:", res.data);
+
+  } catch (error) {
+    // 3. Error ko console par zaroor log karein
+    console.error("Failed to review request:", error);
+  }
+};
+
   // 2. useEffect hook API se data fetch karne ke liye
   useEffect(() => {
     const fetchRequests = async () => {
@@ -104,13 +123,20 @@ const Requests = () => {
                 )}
 
                 <div className="flex gap-4 mt-6">
-                  <button className="px-5 py-2 text-sm font-semibold text-white bg-green-500 rounded-full shadow-md hover:bg-green-600 transition-colors duration-300">
-                    Accept
-                  </button>
-                  <button className="px-5 py-2 text-sm font-semibold text-gray-700 bg-gray-200 rounded-full hover:bg-gray-300 transition-colors duration-300">
-                    Reject
-                  </button>
-                </div>
+    {/* CORRECT: "Accept" button ab "accepted" status bhejega */}
+    <button 
+        className="px-5 py-2 text-sm font-semibold text-white bg-green-500 rounded-full shadow-md hover:bg-green-600 transition-colors duration-300" 
+        onClick={() => reviewRequest("accepted", request._id)}>
+        Accept
+    </button>
+    
+    {/* CORRECT: "Reject" button ab "rejected" status bhejega aur sahi ID use karega */}
+    <button 
+        className="px-5 py-2 text-sm font-semibold text-gray-700 bg-gray-200 rounded-full hover:bg-gray-300 transition-colors duration-300" 
+        onClick={() => reviewRequest("rejected", request._id)}>
+        Reject
+    </button>
+</div>
               </div>
             </div>
           );

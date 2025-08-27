@@ -85,7 +85,7 @@ const Connections = () => {
   
   <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8'>
     {connections.map((connection) => {
-      const { firstName, lastName, photoUrl, about, role, age, gender } = connection;
+      const { firstName, lastName, photoUrl, about, age, gender } = connection;
 
       return (
         <div 
@@ -106,28 +106,16 @@ const Connections = () => {
             <div className='text-center mt-4'>
               <h2 className='text-xl font-bold text-gray-900'>{firstName} {lastName}</h2>
               <p className='text-sm font-semibold text-indigo-600 mt-1'>
-                {role || 'Software Developer'} {/* Default role agar data mein nahi hai */}
+                {about || ''} {/* Default role agar data mein nahi hai */}
               </p>
             </div>
             
             {/* About Section (fixed height ke saath) */}
             <p className='text-center text-gray-600 mt-4 text-sm leading-relaxed h-16 overflow-hidden'>
-              {about}
-            </p>
-            <p className='text-center text-gray-600 mt-4 text-sm leading-relaxed h-16 overflow-hidden'>
-              {age + "" +  gender}
+              {gender}, {age} years old
             </p>
 
-            {/* Action Buttons */}
-            <div className='flex gap-4 mt-6'>
-              <button className='px-5 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-full shadow-md hover:bg-indigo-700 transition-colors duration-300'>
-                Connect
-              </button>
-              <button className='px-5 py-2 text-sm font-semibold text-gray-700 bg-gray-200 rounded-full hover:bg-gray-300 transition-colors duration-300'>
-                View
-              </button>
-            </div>
-
+           
           </div>
         </div>
       );
