@@ -2,14 +2,16 @@ import axios from "axios";
 import React, { useEffect } from "react";
 import { BASE_URL } from "../redux/constants"; // Make sure this path is correct
 import { useDispatch, useSelector } from "react-redux";
-import { addRequests } from "../redux/requestSlice"; // Make sure this path is correct
+import { addRequests, removeRequest } from "../redux/requestSlice"; // Make sure this path is correct
 
 const Requests = () => {
   // 1. Redux store se 'requests' state ko select karein
   const requests = useSelector((store) => store.requests);
   const dispatch = useDispatch();
 
- const reviewRequest = async (status, _id) => { // 1. Function ko 'async' banayein
+  const [showButtons, setShowButtons] = React.useState(true);
+
+ const reviewRequest = async (status, _id) => { 
   console.log(status, _id); // Debugging ke liye
   try {
     // 2. 'await' use karke API response ka intezaar karein
@@ -21,7 +23,7 @@ const Requests = () => {
     
     // Optional: Success message dikhayein ya state update karein
     console.log("Request reviewed successfully:", res.data);
-
+    dispatch(removeRequest(_id)); // Redux store se request hata dein
   } catch (error) {
     // 3. Error ko console par zaroor log karein
     console.error("Failed to review request:", error);

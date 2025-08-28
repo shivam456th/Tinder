@@ -7,7 +7,9 @@ import toast from "react-hot-toast";
 import { addUser } from "../redux/userSlice";
 
 const Login = () => {
-  const [emailId, setEmailId] = useState("Shivam792@gmail.com");
+  const [firstName, setFirstName] = useState("Honey");
+  const [lastName, setLastName] = useState("Singh");
+  const [emailId, setEmailId] = useState("honeysingh@example.com");
   const [password, setPassword] = useState("shivams123@$%RR");
 
   const dispatch = useDispatch();
@@ -38,6 +40,34 @@ const Login = () => {
         <div className="card-body">
           <h2 className="card-title">Login</h2>
           <form onSubmit={handleLogin}>
+            <div className="form-control">
+              <label htmlFor="email" className="label">
+                FirstName 
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="firstName"
+                placeholder="example@example.com"
+                className="input input-bordered w-full max-w-xs"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+              />
+            </div>
+            <div className="form-control">
+              <label htmlFor="email" className="label">
+                lastName
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="lastName"
+                placeholder="example@example.com"
+                className="input input-bordered w-full max-w-xs"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+              />
+            </div>
             <div className="form-control">
               <label htmlFor="email" className="label">
                 Email

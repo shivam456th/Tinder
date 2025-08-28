@@ -26,6 +26,8 @@ import { Link } from 'react-router-dom'
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
+    if (!feed) return;
+
     return (
       <Link to='/feed' className="flex justify-center my-10">
         {feed && feed.length > 0 ? (
