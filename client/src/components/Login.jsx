@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-// import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import axios from "axios";
 import { BASE_URL } from "../redux/constants";
@@ -13,12 +12,14 @@ const Login = () => {
   const [emailId, setEmailId] = useState("honeysingh@example.com");
   const [isLoginFrom, setIsLoginFrom] = useState(true);
   const [password, setPassword] = useState("shivams123@$%RR");
+  const [loginError, setLoginError] = useState(""); // Error ke liye state
 
   const navigate = useNavigate();
-
   const dispatch = useDispatch();
+
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoginError(""); // Purana error clear kiya
     try {
       const res = await axios.post(
         `${BASE_URL}/login`,
@@ -32,25 +33,37 @@ const Login = () => {
       );
       console.log(res);
       dispatch(addUser(res.data));
-      return navigate("/")
+      return navigate("/feed");
     } catch (error) {
-      console.error(error.response.data);
-      toast.error("Invalid credentials");
+      const errorMessage = error.response?.data?.message || "Invalid credentials";
+      console.error(errorMessage);
+      toast.error(errorMessage);
+      setLoginError(errorMessage); // Naya error state mein set kiya
     }
   };
 
-  const handleSignUp = async () => {
+  const handleSignUp = async (e) => {
+    e?.preventDefault?.();
+    setLoginError("");
     try {
-      const res = axios.post(BASE_URL + "/signup", {firstName, lastName, emailId, password},{},
-        {withCredentials: true}
+      const res = await axios.post(
+        `${BASE_URL}/signup`,
+        {
+          firstName, lastName, emailId, password,
+          // Add these if backend validation requires:
+          // gender, age, photoUrl, about, skills
+        },
+        { withCredentials: true }
       );
-      dispatch(addUser(res.data))
-      return navigate("/profile")
+      dispatch(addUser(res.data.data));
+      navigate("/profile");
     } catch (error) {
-      console.error(error.response.data);
-      toast.error("Invalid credentials"); 
+      const errorMessage = error.response?.data?.message || "Sign up failed. Please try again.";
+      toast.error(errorMessage);
+      setLoginError(errorMessage);
     }
-  }
+  };
+  
 
   return (
     <div className="flex justify-center my-10">
@@ -60,34 +73,34 @@ const Login = () => {
           <form onSubmit={handleLogin}>
             {!isLoginFrom && (
               <>
-              <div className="form-control">
-              <label htmlFor="email" className="label">
-                FirstName 
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="firstName"
-                placeholder="example@example.com"
-                className="input input-bordered w-full max-w-xs"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-              />
-            </div>
-            <div className="form-control">
-              <label htmlFor="email" className="label">
-                lastName
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="lastName"
-                placeholder="example@example.com"
-                className="input input-bordered w-full max-w-xs"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-              />
-            </div>
+                <div className="form-control">
+                  <label htmlFor="firstName" className="label">
+                    FirstName
+                  </label>
+                  <input
+                    type="text"
+                    id="firstName"
+                    name="firstName"
+                    placeholder="Honey"
+                    className="input input-bordered w-full max-w-xs"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                  />
+                </div>
+                <div className="form-control">
+                  <label htmlFor="lastName" className="label">
+                    lastName
+                  </label>
+                  <input
+                    type="text"
+                    id="lastName"
+                    name="lastName"
+                    placeholder="Singh"
+                    className="input input-bordered w-full max-w-xs"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                  />
+                </div>
               </>
             )}
             <div className="form-control">
@@ -119,12 +132,23 @@ const Login = () => {
               />
             </div>
             <div className="form-control mt-6 card-actions m-2">
-              <button type="btn btn-primary" className="btn btn-primary" onClick={isLoginFrom ? handleLogin : handleSignUp}>
-                {isLoginFrom? "Login" : "Sign up"}
+              <button
+                type="button" // ise "button" rakha hai taki page reload na ho
+                className="btn btn-primary"
+                onClick={isLoginFrom ? handleLogin : handleSignUp}
+              >
+                {isLoginFrom ? "Login" : "Sign up"}
               </button>
             </div>
-            <p className="text-red-500">{error}</p>
-            <p className="m-auto cursor-pointer" onClick={()=>setIsLoginFrom(( value ) => !value)}>{isLoginFrom ? "New User? Signup Here" : "Existing user? Login Here"}
+            {/* Yahan error message display hoga */}
+            <p className="text-red-500 text-center">{loginError}</p>
+            <p
+              className="m-auto cursor-pointer text-center mt-2"
+              onClick={() => setIsLoginFrom((value) => !value)}
+            >
+              {isLoginFrom
+                ? "New User? Signup Here"
+                : "Existing user? Login Here"}
             </p>
           </form>
         </div>

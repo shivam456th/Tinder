@@ -1,5 +1,7 @@
 import { useDispatch } from "react-redux";
 import { removeFeed } from "../redux/FeedSlice";
+import axios from "axios";
+import { BASE_URL } from "../redux/constants";
 
 const UserCard = ({ user }) => {
   const { _id ,firstName, lastName, photoUrl, age, gender, about, skills } = user;
@@ -7,11 +9,13 @@ const UserCard = ({ user }) => {
   const dispatch = useDispatch()
   const handleSendRequest = async (status,userId) => {
     try {
-      const res = await axios.post(BASE_URL+"/requests/send/"+status+"/"+userId,
+      const res = await axios.post(BASE_URL+"/request/send/"+status+"/"+userId,
         {},
         {withCredentials: true})
+        console.log(res);
         dispatch(removeFeed(userId))
      } catch (error) {
+      console.log(error);
       
     }
   }

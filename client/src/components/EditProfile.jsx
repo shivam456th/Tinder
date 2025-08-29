@@ -147,6 +147,7 @@ import { useDispatch } from "react-redux";
 import { addUser } from "../redux/userSlice";
 import { BASE_URL } from "../redux/constants";
 import { User, Image, Calendar, Info, Save, UserCheck } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const EditProfile = ({ user }) => {
   const [firstName, setFirstName] = useState(user.firstName);
@@ -172,6 +173,7 @@ const EditProfile = ({ user }) => {
       setTimeout(()=>{
         setShowToast(false)
       },3000);
+      // navigate("/feed")
     } catch (error) {
       setError(error.message);
       console.error("Profile update failed:", error.message);
