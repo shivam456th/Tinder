@@ -28,6 +28,10 @@ import { Link } from 'react-router-dom'
 
     if (!feed) return;
 
+    if (feed.length <= 0) {
+      return <h1>No new user Found</h1>
+    }
+
     return (
       <Link to='/feed' className="flex justify-center my-10">
         {feed && feed.length > 0 ? (

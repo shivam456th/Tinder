@@ -7,6 +7,7 @@ const UserCard = ({ user }) => {
   const { _id ,firstName, lastName, photoUrl, age, gender, about, skills } = user;
 
   const dispatch = useDispatch()
+  
   const handleSendRequest = async (status,userId) => {
     try {
       const res = await axios.post(BASE_URL+"/request/send/"+status+"/"+userId,
